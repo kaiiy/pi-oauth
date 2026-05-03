@@ -1,16 +1,18 @@
 # pi-oauth
 
-OAuth で取得した資格情報を使って、`@mariozechner/pi-ai` の provider を扱う小さな native client です。
+`pi-oauth` は、Codex の OAuth 認証を利用して OpenAI モデルを呼び出すための JS / TS ライブラリです。
 
-今は OpenAI Codex 用の `CodexClient` を提供しています。将来ほかの provider を追加する場合は、`PiOAuthClient` に provider 定義を渡して拡張できます。
-
-返り値と stream event は `pi-ai` native の `AssistantMessage` / `AssistantMessageEventStream` です。tools、thinking、image などの rich content を変換 layer で削らず、そのまま扱えます。
+ChatGPT のサブスクリプションに紐づく認証情報を使い、自作アプリケーションから OpenAI モデルを呼び出せるようにします。
 
 ## Install
 
 ```bash
 yarn add https://github.com/kaiiy/pi-oauth
 ```
+
+:::note
+以下の文章は AI 生成です。誤りがある可能性があります。
+:::
 
 詳しい型定義と method の説明は [docs/api.md](docs/api.md) を見てください。
 
