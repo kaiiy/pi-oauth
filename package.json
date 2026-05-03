@@ -1,0 +1,42 @@
+{
+  "name": "pi-oauth",
+  "version": "0.1.0",
+  "packageManager": "yarn@4.13.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaiiy/pi-oauth.git"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "test": "yarn build && node --test test/**/*.test.mjs",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint . --fix"
+  },
+  "dependencies": {
+    "@mariozechner/pi-ai": "^0.72.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "oxlint": "^1.62.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
