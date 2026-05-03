@@ -8,19 +8,11 @@ const normalizeInput = (input, model, defaultSystemPrompt) => {
     if (!Array.isArray(input)) {
         return input;
     }
-    const system = [];
-    const messages = [];
-    let sawNonSystem = false;
-    for (const item of input) {
-        if (item.role === "system") {
-            if (sawNonSystem) {
-                throw new Error('System messages are only supported at the beginning of the conversation. Move later "system" messages to the front or merge them into one initial system message.');
-            }
-            system.push(item);
-            continue;
-        }
-        sawNonSystem = true;
-        messages.push(item);
+    const firstMessageIndex = input.findIndex((msg) => msg.role !== "system");
+    const system = firstMessageIndex === -1 ? input : input.slice(0, firstMessageIndex);
+    const messages = firstMessageIndex === -1 ? [] : input.slice(firstMessageIndex);
+    if (messages.some((msg) => msg.role === "system")) {
+        throw new Error('System messages are only supported at the beginning of the conversation. Move later "system" messages to the front or merge them into one initial system message.');
     }
     const systemPrompt = system.length > 0 ? system.map((msg) => msg.content).join("\n\n") : defaultSystemPrompt;
     return {

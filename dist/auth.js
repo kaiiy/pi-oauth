@@ -3,14 +3,13 @@ import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import { createInterface } from "node:readline/promises";
+import { getOAuthApiKey } from "@mariozechner/pi-ai/oauth";
 export class AuthStore {
     authPath;
-    deps;
     provider;
     authUpdateQueue = Promise.resolve();
-    constructor(authPath, deps, provider) {
+    constructor(authPath, provider) {
         this.authPath = authPath;
-        this.deps = deps;
         this.provider = provider;
     }
     login = async () => {
@@ -26,7 +25,7 @@ export class AuthStore {
             if (!credentials) {
                 throw new Error(`${this.provider.displayName} OAuth credentials not found in ${this.authPath}. Call await client.login() first.`);
             }
-            const result = await this.deps.getOAuthApiKey(this.provider.id, {
+            const result = await getOAuthApiKey(this.provider.id, {
                 [this.provider.id]: credentials,
             });
             if (!result) {

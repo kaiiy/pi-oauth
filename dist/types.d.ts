@@ -1,5 +1,5 @@
-import { type complete, type getModel, type stream, type Context, type ProviderStreamOptions } from "@mariozechner/pi-ai";
-import type { OAuthCredentials, OAuthPrompt, loginOpenAICodex } from "@mariozechner/pi-ai/oauth";
+import { type Context, type ProviderStreamOptions } from "@mariozechner/pi-ai";
+import type { OAuthCredentials, OAuthPrompt } from "@mariozechner/pi-ai/oauth";
 export type Role = "system" | "user" | "assistant";
 export interface SimpleMessage {
     role: Role;
@@ -26,26 +26,10 @@ export interface OAuthProvider {
     defaultAuthPath: string;
     login(handlers: OAuthLoginHandlers): Promise<OAuthCredentials>;
 }
-export type ApiKeyResult = {
-    newCredentials: OAuthCredentials;
-    apiKey: string;
-} | null;
-export interface Deps {
-    complete: typeof complete;
-    stream: typeof stream;
-    getModel: typeof getModel;
-    getOAuthApiKey: (providerId: string, credentials: Record<string, OAuthCredentials>) => Promise<ApiKeyResult>;
-}
 export interface ClientOptions {
     authPath?: string;
     defaultModel?: string;
     systemPrompt?: string | null;
-    deps?: Partial<Deps>;
-}
-export interface CodexClientOptions extends ClientOptions {
-    deps?: Partial<Deps> & {
-        loginOpenAICodex?: typeof loginOpenAICodex;
-    };
 }
 export interface PiOAuthClientOptions extends ClientOptions {
     provider: OAuthProvider;

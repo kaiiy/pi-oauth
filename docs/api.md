@@ -12,7 +12,7 @@ import { CodexClient } from "pi-oauth";
 
 ```ts
 class CodexClient extends PiOAuthClient {
-  constructor(opts?: CodexClientOptions);
+  constructor(opts?: ClientOptions);
 }
 ```
 
@@ -24,17 +24,15 @@ const client = new CodexClient({
 });
 ```
 
-### CodexClientOptions
+### ClientOptions
 
 ```ts
-interface CodexClientOptions extends ClientOptions {
-  deps?: Partial<Deps> & {
-    loginOpenAICodex?: typeof loginOpenAICodex;
-  };
+interface ClientOptions {
+  authPath?: string;
+  defaultModel?: string;
+  systemPrompt?: string | null;
 }
 ```
-
-`deps.loginOpenAICodex` はテストや差し替え用途です。通常の利用では指定しません。
 
 ## PiOAuthClient
 
@@ -72,14 +70,12 @@ interface ClientOptions {
   authPath?: string;
   defaultModel?: string;
   systemPrompt?: string | null;
-  deps?: Partial<Deps>;
 }
 ```
 
 - `authPath`: OAuth credentials を保存する JSON file path。`~` と `~/` を展開します。
 - `defaultModel`: request ごとに `model` を渡さない場合に使う model id。
-- `systemPrompt`: system message がない input に使う default system prompt。`null` を渡すと default system prompt を使いません。
-- `deps`: テストや内部差し替え用の依存注入です。通常は指定しません。
+- `systemPrompt`: `string` input や `SimpleMessage[]` input で、request に `systemPrompt` がない場合に使う system prompt。省略すると system prompt は使いません。
 
 ## Authentication
 
@@ -171,7 +167,7 @@ interface CompleteParams {
 
 `model` を省略した場合は constructor の `defaultModel` を使います。どちらも未指定の場合は error になります。
 
-`systemPrompt` は `string` input や `SimpleMessage[]` input に system prompt として使われます。`input` に `system` message がある場合は、その system message が優先されます。`null` を渡すと request 単位で system prompt を使いません。`Context` を渡す場合は `Context.systemPrompt` を使ってください。
+`systemPrompt` は `string` input や `SimpleMessage[]` input に system prompt として使われます。省略した場合は constructor の `systemPrompt` を使います。`input` に `system` message がある場合は、その system message が優先されます。`null` または空文字を渡すと request 単位で system prompt を使いません。`Context` を渡す場合は `Context.systemPrompt` を使ってください。
 
 `options` は `pi-ai` の `ProviderStreamOptions` です。ただし `apiKey` は `pi-oauth` が OAuth credentials から解決するため指定しません。
 

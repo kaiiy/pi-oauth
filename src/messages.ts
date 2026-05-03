@@ -1,4 +1,4 @@
-import type { Context, Message, Model, Usage } from "@mariozechner/pi-ai";
+import type { Context, Message, Model } from "@mariozechner/pi-ai";
 
 import type { ClientInput, SimpleMessage } from "./types.js";
 
@@ -19,23 +19,14 @@ const normalizeInput = (
     return input;
   }
 
-  const system: SimpleMessage[] = [];
-  const messages: SimpleMessage[] = [];
-  let sawNonSystem = false;
+  const firstMessageIndex = input.findIndex((msg) => msg.role !== "system");
+  const system = firstMessageIndex === -1 ? input : input.slice(0, firstMessageIndex);
+  const messages = firstMessageIndex === -1 ? [] : input.slice(firstMessageIndex);
 
-  for (const item of input) {
-    if (item.role === "system") {
-      if (sawNonSystem) {
-        throw new Error(
-          'System messages are only supported at the beginning of the conversation. Move later "system" messages to the front or merge them into one initial system message.',
-        );
-      }
-      system.push(item);
-      continue;
-    }
-
-    sawNonSystem = true;
-    messages.push(item);
+  if (messages.some((msg) => msg.role === "system")) {
+    throw new Error(
+      'System messages are only supported at the beginning of the conversation. Move later "system" messages to the front or merge them into one initial system message.',
+    );
   }
 
   const systemPrompt = system.length > 0 ? system.map((msg) => msg.content).join("\n\n") : defaultSystemPrompt;
@@ -71,7 +62,7 @@ const userMessage = (content: string): Message => {
   };
 };
 
-const emptyUsage = (): Usage => {
+const emptyUsage = () => {
   return {
     input: 0,
     output: 0,

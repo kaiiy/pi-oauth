@@ -4,9 +4,9 @@ import { dirname, resolve } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import { createInterface } from "node:readline/promises";
 
-import type { OAuthCredentials, OAuthPrompt } from "@mariozechner/pi-ai/oauth";
+import { getOAuthApiKey, type OAuthCredentials, type OAuthPrompt } from "@mariozechner/pi-ai/oauth";
 
-import type { Deps, OAuthProvider } from "./types.js";
+import type { OAuthProvider } from "./types.js";
 
 interface AuthEntry extends OAuthCredentials {
   type: "oauth";
@@ -19,7 +19,6 @@ export class AuthStore {
 
   constructor(
     private readonly authPath: string,
-    private readonly deps: Deps,
     private readonly provider: OAuthProvider,
   ) {}
 
@@ -39,7 +38,7 @@ export class AuthStore {
         throw new Error(`${this.provider.displayName} OAuth credentials not found in ${this.authPath}. Call await client.login() first.`);
       }
 
-      const result = await this.deps.getOAuthApiKey(this.provider.id, {
+      const result = await getOAuthApiKey(this.provider.id, {
         [this.provider.id]: credentials,
       });
 

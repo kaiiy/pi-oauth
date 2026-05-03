@@ -158,9 +158,13 @@ console.log(final.content);
 `options` は `pi-ai` の provider options です。`apiKey` は OAuth credentials から解決するため指定しません。
 
 ```ts
+const client = new CodexClient({
+  defaultModel: "gpt-5.5",
+  systemPrompt: "You are concise.",
+});
+
 const message = await client.complete({
   input: "短く答えて",
-  systemPrompt: "You are concise.",
   options: {
     temperature: 0.2,
     maxTokens: 128,
@@ -168,7 +172,7 @@ const message = await client.complete({
 });
 ```
 
-default system prompt を使いたくない場合は `systemPrompt: null` を渡します。
+constructor の `systemPrompt` は、`string` input や `SimpleMessage[]` input で request に `systemPrompt` がない場合に使われます。request 単位で上書きしたい場合は `complete()` / `stream()` に `systemPrompt` を渡します。request 単位で system prompt を使わない場合は `systemPrompt: null` を渡します。
 
 ## Custom provider
 

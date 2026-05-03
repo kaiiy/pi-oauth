@@ -1,9 +1,8 @@
 import { type AssistantMessage, type AssistantMessageEventStream } from "@mariozechner/pi-ai";
-import type { CompleteParams, CodexClientOptions, PiOAuthClientOptions } from "./types.js";
+import type { CompleteParams, ClientOptions, PiOAuthClientOptions } from "./types.js";
 export declare class PiOAuthClient {
     private readonly defaultModel?;
     private readonly defaultSystemPrompt;
-    private readonly deps;
     private readonly auth;
     private readonly provider;
     constructor(opts: PiOAuthClientOptions);
@@ -16,5 +15,5 @@ export declare class PiOAuthClient {
     private resolveSystemPrompt;
 }
 export declare class CodexClient extends PiOAuthClient {
-    constructor(opts?: CodexClientOptions);
+    constructor(opts?: ClientOptions);
 }
