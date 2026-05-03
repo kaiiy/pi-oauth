@@ -4,15 +4,13 @@
 
 ChatGPT のサブスクリプションに紐づく認証情報を使い、自作アプリケーションから OpenAI モデルを呼び出せるようにします。
 
+ここから下の文章は AI 生成です。誤りがある可能性があります。
+
 ## Install
 
 ```bash
 yarn add https://github.com/kaiiy/pi-oauth
 ```
-
-:::note
-以下の文章は AI 生成です。誤りがある可能性があります。
-:::
 
 詳しい型定義と method の説明は [docs/api.md](docs/api.md) を見てください。
 
